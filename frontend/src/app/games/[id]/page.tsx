@@ -1,0 +1,188 @@
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import { Calendar, ExternalLink } from "lucide-react";
+import ReviewsList from "@/components/ReviewsList";
+
+interface Game {
+  id: number;
+  name: string;
+  cover_image: string | null;
+  release_date: string | null;
+  summary: string | null;
+  platform_list: string[] | null;
+  tags: Array<{
+    id: number;
+    name: string;
+    color: string;
+    description: string | null;
+  }>;
+}
+
+async function getGame(id: string): Promise<Game | null> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/games/${id}`,
+      { cache: "no-store" }
+    );
+    
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+export default async function GamePage({ params }: { params: { id: string } }) {
+  const game = await getGame(params.id);
+
+  if (!game) {
+    notFound();
+  }
+
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "TBA";
+    try {
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch {
+      return "TBA";
+    }
+  };
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section with Game Header Image */}
+      <div className="relative h-[60vh] min-h-[400px]">
+        {game.cover_image ? (
+          <>
+            <Image
+              src={game.cover_image}
+              alt={game.name}
+              fill
+              className="object-cover"
+              priority
+            />
+            {/* Gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-dark-bg/80 via-transparent to-dark-bg/80" />
+          </>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-dark-card to-dark-bg" />
+        )}
+
+        {/* Game Title Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-8">
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+              {game.name}
+            </h1>
+            <div className="flex flex-wrap items-center gap-4 text-gray-300">
+              {game.release_date && (
+                <div className="flex items-center gap-2">
+                  <Calendar size={20} />
+                  <span>{formatDate(game.release_date)}</span>
+                </div>
+              )}
+              {game.platform_list && game.platform_list.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <span>•</span>
+                  <span>{game.platform_list.join(", ")}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Summary */}
+            {game.summary && (
+              <section>
+                <h2 className="text-2xl font-bold mb-4 text-neon-blue">About</h2>
+                <p className="text-gray-300 leading-relaxed">{game.summary}</p>
+              </section>
+            )}
+
+            {/* Consensus Tags */}
+            {game.tags && game.tags.length > 0 && (
+              <section>
+                <h2 className="text-2xl font-bold mb-4 text-neon-blue">
+                  Community Consensus
+                </h2>
+                <div className="bg-dark-card rounded-lg p-6 border border-neon-blue/20">
+                  <p className="text-sm text-gray-400 mb-4">
+                    Based on analysis of player reviews
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {game.tags.map((tag) => (
+                      <span
+                        key={tag.id}
+                        className={`tag-${tag.color} text-base px-4 py-2`}
+                        title={tag.description || undefined}
+                      >
+                        {tag.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Reviews Section */}
+            <section>
+              <h2 className="text-2xl font-bold mb-4 text-neon-blue">
+                Player Reviews
+              </h2>
+              <ReviewsList gameId={game.id} />
+            </section>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Steam Link */}
+            <div className="bg-dark-card rounded-lg p-6 border border-neon-blue/20">
+              <h3 className="font-bold mb-4">Get the Game</h3>
+              <a
+                href={`https://store.steampowered.com/app/${game.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r from-neon-blue to-neon-pink rounded-lg font-semibold hover:shadow-neon transition-all duration-300"
+              >
+                View on Steam
+                <ExternalLink size={18} />
+              </a>
+            </div>
+
+            {/* Info Box */}
+            <div className="bg-dark-card rounded-lg p-6 border border-gray-800">
+              <h3 className="font-bold mb-4">Game Info</h3>
+              <div className="space-y-3 text-sm">
+                {game.release_date && (
+                  <div>
+                    <span className="text-gray-400">Release Date:</span>
+                    <div className="font-medium mt-1">{formatDate(game.release_date)}</div>
+                  </div>
+                )}
+                {game.platform_list && game.platform_list.length > 0 && (
+                  <div>
+                    <span className="text-gray-400">Platforms:</span>
+                    <div className="font-medium mt-1">
+                      {game.platform_list.join(", ")}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

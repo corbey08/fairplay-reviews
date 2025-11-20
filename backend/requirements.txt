@@ -1,0 +1,26 @@
+# Core Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+
+# Database
+sqlalchemy==2.0.25
+psycopg2-binary==2.9.9
+
+# Environment & Config
+python-dotenv==1.0.0
+
+# HTTP Requests & APIs
+requests==2.31.0
+
+# Web Scraping
+beautifulsoup4==4.12.3
+playwright==1.41.0
+lxml==5.1.0
+
+# Optional: For deployment
+gunicorn==21.2.0
+
+# Optional: For more advanced NLP (uncomment if needed)
+# textblob==0.17.1
+# nltk==3.8.1
