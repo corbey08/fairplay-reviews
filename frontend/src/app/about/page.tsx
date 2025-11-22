@@ -7,7 +7,7 @@ export default function AboutPage() {
       <div className="bg-gradient-to-b from-dark-card to-dark-bg py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl font-bold mb-6">
-            About <span className="bg-gradient-to-r from-neon-blue to-neon-pink bg-clip-text text-transparent">Fairplay Reviews</span>
+            About <span style={{ color: '#00F0FF' }}>Fairplay Reviews</span>
           </h1>
           <p className="text-xl text-gray-300 leading-relaxed">
             We're building a better way to discover games through unbiased, community-driven reviews. 
@@ -22,8 +22,8 @@ export default function AboutPage() {
         <div className="space-y-4 text-gray-300 leading-relaxed">
           <p>
             The gaming industry has a trust problem. Traditional review sites often have conflicts of interest through 
-            advertising, sponsorships, or early access agreements. Individual influencers may be sponsored or have 
-            their own biases. Players deserve better.
+            sponsorships, or early access agreements. Individual influencers may be sponsored or have their own biases. 
+            Players deserve better.
           </p>
           <p>
             Fairplay Reviews was created to solve this problem. We aggregate thousands of real player reviews from 
@@ -31,8 +31,8 @@ export default function AboutPage() {
             story, gameplay, or performance? Our tags tell you at a glance.
           </p>
           <p>
-            We're 100% independent. We don't take money from publishers, we don't run ads, and we don't use affiliate 
-            links. Our only goal is to help you make informed decisions about which games are worth your time and money.
+            We're 100% independent. We don't take money from publishers and we are not influenced by advertisers. Our 
+            only goal is to help you make informed decisions about which games are worth your time and money.
           </p>
         </div>
       </section>
@@ -60,7 +60,7 @@ export default function AboutPage() {
                 icon: TrendingUp,
                 title: "3. Consensus Building",
                 description: "We identify which themes appear most frequently across reviews and calculate consensus scores for each tag.",
-                color: "text-neon-purple"
+                colorStyle: { color: '#9D00FF' }  // Purple
               },
               {
                 icon: Shield,
@@ -72,7 +72,7 @@ export default function AboutPage() {
                 icon: Zap,
                 title: "5. Daily Updates",
                 description: "Our system runs daily to incorporate new reviews, ensuring tags stay current with the latest player sentiment.",
-                color: "text-neon-orange"
+                colorStyle: { color: '#FF6600' }  // Orange
               },
               {
                 icon: Users,
@@ -82,7 +82,11 @@ export default function AboutPage() {
               }
             ].map((step, index) => (
               <div key={index} className="bg-dark-bg rounded-lg p-6 border border-gray-800">
-                <div className={`${step.color} mb-4`}>
+                <div className="mb-4" style={step.colorStyle || { 
+                  color: step.color === 'text-neon-pink' ? '#FF00F5' : 
+                        step.color === 'text-neon-green' ? '#39FF14' :
+                        '#00F0FF'
+                }}>
                   <step.icon size={40} />
                 </div>
                 <h3 className="text-xl font-bold mb-3">{step.title}</h3>
@@ -98,30 +102,29 @@ export default function AboutPage() {
         <h2 className="text-3xl font-bold mb-8 text-neon-blue">Why Trust Fairplay Reviews?</h2>
         
         <div className="space-y-6">
-          <div className="bg-dark-card rounded-lg p-6 border border-neon-green/30">
-            <h3 className="text-xl font-bold mb-3 text-neon-green">🛡️ 100% Independent</h3>
+          <div className="bg-dark-card rounded-lg p-6 border" style={{ borderColor: 'rgba(57, 255, 20, 0.3)' }}>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#39FF14' }}>🛡️ 100% Independent</h3>
             <p className="text-gray-300">
-              We don't accept money from game publishers, run advertisements, or use affiliate links. 
-              Zero conflicts of interest.
+              We don't accept money from game publishers. Zero conflicts of interest.
             </p>
           </div>
 
-          <div className="bg-dark-card rounded-lg p-6 border border-neon-blue/30">
-            <h3 className="text-xl font-bold mb-3 text-neon-blue">📊 Data-Driven</h3>
+          <div className="bg-dark-card rounded-lg p-6 border" style={{ borderColor: 'rgba(0, 240, 255, 0.3)' }}>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#00F0FF' }}>📊 Data-Driven</h3>
             <p className="text-gray-300">
               Our tags aren't opinions - they're statistical consensus from hundreds or thousands of real player reviews.
             </p>
           </div>
 
-          <div className="bg-dark-card rounded-lg p-6 border border-neon-pink/30">
-            <h3 className="text-xl font-bold mb-3 text-neon-pink">👁️ Fully Transparent</h3>
+          <div className="bg-dark-card rounded-lg p-6 border" style={{ borderColor: 'rgba(255, 0, 245, 0.3)' }}>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#FF00F5' }}>👁️ Fully Transparent</h3>
             <p className="text-gray-300">
               You can read the actual reviews behind every tag. Our methodology is open and we show our sources.
             </p>
           </div>
 
-          <div className="bg-dark-card rounded-lg p-6 border border-neon-orange/30">
-            <h3 className="text-xl font-bold mb-3 text-neon-orange">🔄 Always Current</h3>
+          <div className="bg-dark-card rounded-lg p-6 border" style={{ borderColor: 'rgba(255, 102, 0, 0.3)' }}>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#FF6600' }}>🔄 Always Current</h3>
             <p className="text-gray-300">
               Daily updates ensure our data reflects the latest patches, DLC, and community sentiment.
             </p>
@@ -137,7 +140,7 @@ export default function AboutPage() {
             We're always looking to improve. Get in touch with suggestions or questions.
           </p>
           <a
-            href="mailto:contact@fairplayreviews.com"
+            href="mailto:contact@fairplayreviews.net"
             className="inline-block px-8 py-3 bg-gradient-to-r from-neon-blue to-neon-pink rounded-lg font-semibold hover:shadow-neon transition-all duration-300"
           >
             Contact Us

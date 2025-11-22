@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Twitter, Mail } from "lucide-react";
+import Image from "next/image";
+import { Github, Twitter, Mail, Instagram } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -10,37 +11,60 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
-            <Link href="/" className="inline-flex items-center space-x-3 group mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-neon-blue to-neon-pink rounded-lg flex items-center justify-center">
-                <span className="text-2xl font-bold">FP</span>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-neon-blue to-neon-pink bg-clip-text text-transparent">
+            <Link href="/" className="inline-block mb-4">
+              <img 
+                src="/images/logo-full.png" 
+                alt="Fairplay Reviews" 
+                className="h-10 w-auto"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextElementSibling.style.display = 'block';
+                }}
+              />
+              <span 
+                className="text-xl font-bold hidden"
+                style={{ color: '#00F0FF', display: 'none' }}
+              >
                 Fairplay Reviews
               </span>
             </Link>
             <p className="text-gray-400 mb-4 max-w-md">
-              Independent, community-driven game reviews. No sponsors, no bias, just honest consensus from real players.
+              Independent, community-driven game reviews. We analyze thousands of real player reviews 
+              to give you unbiased consensus on what games are really like. Our reviews are never 
+              influenced by advertising or affiliate relationships.
             </p>
             <div className="flex gap-4">
               <a
-                href="https://github.com"
+                href="https://github.com/corbey08"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-neon-blue transition-colors"
+                aria-label="GitHub"
               >
                 <Github size={24} />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://x.com/FairplayReview4"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-neon-blue transition-colors"
+                aria-label="X (Twitter)"
               >
                 <Twitter size={24} />
               </a>
               <a
-                href="mailto:contact@fairplayreviews.com"
+                href="https://www.instagram.com/fairplayreviews/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-neon-blue transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram size={24} />
+              </a>
+              <a
+                href="mailto:contact@fairplayreviews.net"
+                className="text-gray-400 hover:text-neon-blue transition-colors"
+                aria-label="Email"
               >
                 <Mail size={24} />
               </a>
@@ -49,7 +73,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-bold mb-4 text-neon-blue">Explore</h3>
+            <h3 className="font-bold mb-4" style={{ color: '#00F0FF' }}>Explore</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/" className="text-gray-400 hover:text-white transition-colors">
@@ -71,7 +95,7 @@ export default function Footer() {
 
           {/* About Links */}
           <div>
-            <h3 className="font-bold mb-4 text-neon-blue">About</h3>
+            <h3 className="font-bold mb-4" style={{ color: '#00F0FF' }}>About</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
@@ -79,13 +103,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/methodology" className="text-gray-400 hover:text-white transition-colors">
-                  Our Methodology
+                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
+                  Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
-                  Privacy Policy
+                <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
+                  Terms of Service
                 </Link>
               </li>
             </ul>
@@ -97,9 +121,21 @@ export default function Footer() {
           <p className="text-gray-400 text-sm">
             © {new Date().getFullYear()} Fairplay Reviews. All rights reserved.
           </p>
-          <p className="text-gray-500 text-sm">
-            Built with Next.js • Powered by Steam Reviews
-          </p>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-gray-500 text-sm text-center">
+            <span>Powered by Steam Reviews</span>
+            <span className="hidden sm:inline">•</span>
+            <span>
+              Website designed by{" "}
+              <a 
+                href="https://github.com/corbey08" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-neon-blue hover:text-neon-pink transition-colors"
+              >
+                Greg Corbett
+              </a>
+            </span>
+          </div>
         </div>
       </div>
     </footer>

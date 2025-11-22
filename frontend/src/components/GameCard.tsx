@@ -72,12 +72,15 @@ export default function GameCard({ game }: GameCardProps) {
           {game.tags && game.tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {game.tags.slice(0, 3).map((tag) => (
-                <span
+                <Link 
                   key={tag.id}
-                  className={`tag-${tag.color}`}
+                  href={`/tags/${encodeURIComponent(tag.name)}`}
+                  onClick={(e) => e.stopPropagation()}  // Prevents card click
                 >
-                  {tag.name}
-                </span>
+                  <span className={`tag-${tag.color} cursor-pointer hover:opacity-80 transition-opacity`}>
+                    {tag.name}
+                  </span>
+                </Link>
               ))}
               {game.tags.length > 3 && (
                 <span className="text-xs text-gray-500 self-center">

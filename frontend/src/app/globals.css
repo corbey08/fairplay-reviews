@@ -72,3 +72,15 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #00D4E6;
 }
+
+.text-neon-blue {
+  color: #00F0FF;
+}
+
+.text-neon-pink {
+  color: #FF00F5;
+}
+
+.text-neon-green {
+  color: #39FF14;
+}

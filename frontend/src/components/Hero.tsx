@@ -12,8 +12,8 @@ export default function Hero() {
         <div className="text-center space-y-8">
           {/* Main Heading */}
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold">
-            <span className="block mb-2">Unbiased Game Reviews</span>
-            <span className="bg-gradient-to-r from-neon-blue via-neon-pink to-neon-purple bg-clip-text text-transparent">
+            <span className="block mb-2 text-white">Unbiased Game Reviews</span>
+            <span className="block" style={{ color: '#00F0FF' }}>
               Powered by Community
             </span>
           </h1>

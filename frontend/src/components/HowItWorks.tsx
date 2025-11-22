@@ -48,7 +48,7 @@ export default function HowItWorks() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">
-            Why Trust <span className="bg-gradient-to-r from-neon-blue to-neon-pink bg-clip-text text-transparent">Fairplay Reviews</span>?
+            Why Trust <span style={{ color: '#00F0FF' }}>Fairplay Reviews</span>?
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             In a world of sponsored content and paid reviews, we're different.
@@ -63,7 +63,13 @@ export default function HowItWorks() {
               key={index}
               className="bg-dark-card rounded-lg p-6 border border-gray-800 hover:border-neon-blue/30 transition-all duration-300 card-hover"
             >
-              <div className={`${feature.color} mb-4`}>
+              <div className="mb-4" style={{ 
+                color: feature.color === 'text-neon-purple' ? '#9D00FF' : 
+                      feature.color === 'text-neon-orange' ? '#FF6600' : 
+                      feature.color === 'text-neon-green' ? '#39FF14' :
+                      feature.color === 'text-neon-pink' ? '#FF00F5' :
+                      '#00F0FF'
+              }}>
                 <feature.icon size={40} />
               </div>
               <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
