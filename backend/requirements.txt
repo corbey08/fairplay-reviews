@@ -1,11 +1,11 @@
 # Core Framework
-fastapi==0.109.0
-uvicorn[standard]==0.27.0
-pydantic==2.5.3
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+pydantic==2.9.0
 
 # Database
-sqlalchemy==2.0.25
-psycopg2-binary==2.9.9
+sqlalchemy==2.0.36
+psycopg[binary]==3.2.3
 
 # Environment & Config
 python-dotenv==1.0.0
@@ -15,12 +15,11 @@ requests==2.31.0
 
 # Web Scraping
 beautifulsoup4==4.12.3
-playwright==1.41.0
-lxml==5.1.0
+lxml==5.3.0
 
-# Optional: For deployment
-gunicorn==21.2.0
-
-# Optional: For more advanced NLP (uncomment if needed)
-# textblob==0.17.1
-# nltk==3.8.1
+# NLP and Text Analysis
+rake-nltk==1.0.6
+scikit-learn==1.5.2
+textblob==0.18.0.post0
+nltk==3.9.1
+numpy==1.26.4
