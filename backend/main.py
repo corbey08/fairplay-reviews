@@ -15,7 +15,11 @@ app = FastAPI(title="Game Review Aggregator API")
 # CORS middleware for Next.js frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://your-vercel-app.vercel.app"],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://fairplay-reviews-m5galzts6-chris-beardwoods-projects.vercel.app",
+        "https://*.vercel.app"  # Allow all Vercel preview deployments
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
