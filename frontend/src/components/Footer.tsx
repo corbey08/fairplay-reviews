@@ -18,8 +18,12 @@ export default function Footer() {
                 className="h-10 w-auto"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling.style.display = 'block';
+                  const sibling = e.currentTarget.nextElementSibling;
+                  if (sibling instanceof HTMLElement) {
+                    sibling.style.display = 'block';
+                  }
                 }}
+
               />
               <span 
                 className="text-xl font-bold hidden"
