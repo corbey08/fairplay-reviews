@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import GameCard from "@/components/GameCard";
@@ -18,7 +19,7 @@ interface Game {
   }>;
 }
 
-export default function SearchPage() {
+function SearchResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
   const [games, setGames] = useState<Game[]>([]);
@@ -104,7 +105,7 @@ export default function SearchPage() {
             <p className="text-gray-400 mb-6">
               Try adjusting your search or browse all games
             </p>
-            <a
+            
               href="/games"
               className="inline-block px-6 py-3 bg-neon-blue rounded-lg hover:bg-neon-blue/80 transition-colors"
             >
@@ -125,5 +126,20 @@ export default function SearchPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-dark-bg flex items-center justify-center">
+        <div className="text-center">
+          <Search className="mx-auto text-neon-blue mb-4 animate-pulse" size={64} />
+          <p className="text-gray-400">Loading search...</p>
+        </div>
+      </div>
+    }>
+      <SearchResults />
+    </Suspense>
   );
 }
