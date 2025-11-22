@@ -105,7 +105,8 @@ function SearchResults() {
             <p className="text-gray-400 mb-6">
               Try adjusting your search or browse all games
             </p>
-            
+
+            <a
               href="/games"
               className="inline-block px-6 py-3 bg-neon-blue rounded-lg hover:bg-neon-blue/80 transition-colors"
             >
