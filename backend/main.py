@@ -17,8 +17,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://fairplay-reviews-m5galzts6-chris-beardwoods-projects.vercel.app",
-        "https://*.vercel.app"  # Allow all Vercel preview deployments
+        "https://fairplayreviews.net",
+        "https://www.fairplayreviews.net",
+        "https://*.vercel.app",  # Keep for Vercel preview deployments
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -158,3 +159,4 @@ async def fetch_games(days_back: int = 30, db: Session = Depends(get_db)):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
