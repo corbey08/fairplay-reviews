@@ -7,7 +7,7 @@ export default function HowItWorks() {
     {
       icon: Shield,
       title: "100% Independent",
-      description: "No sponsors, no ads, no affiliate links. We're not paid by publishers or platforms.",
+      description: "No sponsors, no influence from advertisers. We're not paid by publishers.",
       color: "text-neon-green",
     },
     {
@@ -127,4 +127,5 @@ export default function HowItWorks() {
       </div>
     </section>
   );
+
 }
