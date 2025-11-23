@@ -93,6 +93,9 @@ export default function Footer() {
                 <Link href="/search" className="text-gray-400 hover:text-white transition-colors">
                   Search
                 </Link>
+                <Link href="/tags" className="text-gray-400 hover:text-white transition-colors">
+                  Browse Tags
+                </Link>
               </li>
             </ul>
           </div>
