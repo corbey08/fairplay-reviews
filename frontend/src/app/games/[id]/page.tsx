@@ -89,7 +89,7 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
             }}>
               {game.release_date && (
                 <div className="flex items-center gap-2">
-                  <Calendar size={20} />
+                  <Calendar size={20} style={{ filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.8))' }} />
                   <span>{formatDate(game.release_date)}</span>
                 </div>
               )}
