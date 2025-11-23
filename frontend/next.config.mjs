@@ -12,6 +12,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'store.akamai.steamstatic.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'steamcdn-a.akamaihd.net',
       },
       {
