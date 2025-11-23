@@ -17,8 +17,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
+        "https://fairplayreviews.net",
+        "https://www.fairplayreviews.net",
         "https://fairplay-reviews-m5galzts6-chris-beardwoods-projects.vercel.app",
-        "https://*.vercel.app"  # Allow all Vercel preview deployments
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -175,7 +176,7 @@ async def search_games(q: str, db: Session = Depends(get_db)):
                 "cover_image": g.cover_image,
                 "release_date": g.release_date,
                 "summary": g.summary,
-                "tags": [{"id": t.id, "name": t.name, "color": t.color} for t in g.tags]
+                "tags": [{"id": t.id, "name": t.name, "color": t.color} for t in g.tags] if g.tags else []
             }
             for g in games
         ]
