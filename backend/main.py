@@ -17,9 +17,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://fairplayreviews.net",
-        "https://www.fairplayreviews.net",
-        "https://*.vercel.app",  # Keep for Vercel preview deployments
+        "https://fairplay-reviews-m5galzts6-chris-beardwoods-projects.vercel.app",
+        "https://*.vercel.app"  # Allow all Vercel preview deployments
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -134,10 +133,53 @@ async def get_tags(db: Session = Depends(get_db)):
 @app.get("/search")
 async def search_games(q: str, db: Session = Depends(get_db)):
     """
-    Search games by name
+    Search games by name with smart matching (handles abbreviations)
     """
-    games = db.query(Game).filter(Game.name.ilike(f"%{q}%")).limit(20).all()
-    return {"query": q, "results": [{"id": g.id, "name": g.name, "cover_image": g.cover_image} for g in games]}
+    if not q or len(q.strip()) < 2:
+        return {"query": q, "results": []}
+    
+    query_lower = q.lower().strip()
+    
+    # Common game abbreviations
+    abbreviations = {
+        'gta': 'grand theft auto',
+        'rdr': 'red dead redemption',
+        'cod': 'call of duty',
+        'csgo': 'counter strike',
+        'cs': 'counter strike',
+        'gow': 'god of war',
+        'tlou': 'the last of us',
+        'botw': 'breath of the wild',
+        'totk': 'tears of the kingdom',
+        'bg3': 'baldur\'s gate 3',
+        'tw3': 'the witcher 3',
+        'rdr2': 'red dead redemption 2',
+        'gta5': 'grand theft auto v',
+        'gtav': 'grand theft auto v',
+    }
+    
+    # Check if query is an abbreviation
+    search_term = abbreviations.get(query_lower, query_lower)
+    
+    # Search for games
+    games = db.query(Game).filter(
+        Game.name.ilike(f"%{search_term}%")
+    ).limit(20).all()
+    
+    return {
+        "query": q,
+        "results": [
+            {
+                "id": g.id,
+                "name": g.name,
+                "cover_image": g.cover_image,
+                "release_date": g.release_date,
+                "summary": g.summary,
+                "tags": [{"id": t.id, "name": t.name, "color": t.color} for t in g.tags]
+            }
+            for g in games
+        ]
+    }
 
 
 @app.post("/admin/fetch-games")
@@ -159,4 +201,3 @@ async def fetch_games(days_back: int = 30, db: Session = Depends(get_db)):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
