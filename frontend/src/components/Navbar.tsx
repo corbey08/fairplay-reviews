@@ -56,11 +56,11 @@ export default function Navbar() {
             <Link href="/games" className="hover:text-neon-blue transition-colors">
               All Games
             </Link>
-            <Link href="/about" className="hover:text-neon-blue transition-colors">
-              About
-            </Link>
             <Link href="/tags" className="hover:text-neon-blue transition-colors">
               Browse Tags
+            </Link>
+            <Link href="/about" className="hover:text-neon-blue transition-colors">
+              About
             </Link>
           </div>
 
