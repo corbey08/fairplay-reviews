@@ -220,8 +220,12 @@ class SteamService:
         except:
             pass
         
-        # Get cover image
-        cover_image = game_details.get('header_image')
+        # Get cover image - use background for better quality in hero sections
+        cover_image = (
+            game_details.get('background') or      # Highest quality
+            game_details.get('background_raw') or  # Alternative high quality
+            game_details.get('header_image')       # Fallback
+        )
         
         # Get platforms
         platforms = []
