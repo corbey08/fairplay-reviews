@@ -99,7 +99,7 @@ export default function Navbar() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search games (try: GTA, Cyberpunk)..."
+                  placeholder="Search games..."
                   className="w-full bg-dark-bg border border-neon-blue/30 rounded-lg px-4 py-2 pl-10 focus:outline-none focus:border-neon-blue transition-colors"
                 />
                 <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
@@ -108,7 +108,7 @@ export default function Navbar() {
 
             {/* Search Dropdown */}
             {showDropdown && searchResults.length > 0 && (
-              <div className="absolute top-full mt-2 w-full bg-dark-card border border-neon-blue/30 rounded-lg shadow-lg overflow-hidden z-50">
+              <div className="absolute top-full mt-2 w-full border border-neon-blue/30 rounded-lg shadow-lg overflow-hidden z-50" style={{ backgroundColor: '#12121A' }}>
                 {searchResults.map((game) => (
                   <Link
                     key={game.id}
