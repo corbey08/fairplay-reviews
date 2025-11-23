@@ -29,11 +29,12 @@ export default function CookieBanner() {
   };
 
   const initializeAnalytics = () => {
-    // Add Google Analytics initialization here
-    // Example:
-    // window.gtag('consent', 'update', {
-    //   analytics_storage: 'granted'
-    // });
+    // Enable Google Analytics
+    if (typeof window.gtag !== 'undefined') {
+      window.gtag('consent', 'update', {
+        analytics_storage: 'granted'
+      });
+    }
   };
 
   if (!showBanner) return null;
