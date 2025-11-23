@@ -20,6 +20,18 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center space-x-3 group">
+            {/* Mobile logo (small) */}
+            <img 
+              src="/images/logo.png" 
+              alt="Fairplay Reviews" 
+              className="h-10 w-10 sm:hidden group-hover:shadow-neon transition-all duration-300"
+            />
+            {/* Desktop logos */}
+            <img 
+              src="/images/logo.png" 
+              alt="Fairplay Reviews" 
+              className="h-10 w-10 hidden sm:block group-hover:shadow-neon transition-all duration-300"
+            />
             <img 
               src="/images/logo-full.png" 
               alt="Fairplay Reviews" 
@@ -27,8 +39,8 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Desktop Search */}
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-8">
+          {/* Search - always visible */}
+          <form onSubmit={handleSearch} className="flex flex-1 max-w-md mx-4 sm:mx-8">
             <div className="relative w-full">
               <input
                 type="text"
@@ -66,18 +78,6 @@ export default function Navbar() {
         {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden py-4 space-y-4">
-            <form onSubmit={handleSearch} className="w-full">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search games or tags..."
-                  className="w-full bg-dark-bg border border-neon-blue/30 rounded-lg px-4 py-2 pl-10 focus:outline-none focus:border-neon-blue transition-colors"
-                />
-                <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
-              </div>
-            </form>
             <div className="flex flex-col space-y-2">
               <Link href="/" className="py-2 hover:text-neon-blue transition-colors">
                 Home
