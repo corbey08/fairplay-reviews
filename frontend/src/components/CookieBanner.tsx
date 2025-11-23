@@ -39,7 +39,7 @@ export default function CookieBanner() {
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-dark-card border-t border-neon-blue/30 shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-dark-card border-t border-neon-blue/30 shadow-lg backdrop-blur-sm" style={{ backgroundColor: '#12121A' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex-1 text-sm text-gray-300">
