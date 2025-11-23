@@ -84,7 +84,9 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
             }}>
               {game.name}
             </h1>
-            <div className="flex flex-wrap items-center gap-4 text-gray-300">
+            <div className="flex flex-wrap items-center gap-4 text-gray-300" style={{
+              textShadow: '2px 2px 4px rgba(0,0,0,0.8), -1px -1px 2px rgba(0,0,0,0.8), 1px -1px 2px rgba(0,0,0,0.8), -1px 1px 2px rgba(0,0,0,0.8)'
+            }}>
               {game.release_date && (
                 <div className="flex items-center gap-2">
                   <Calendar size={20} />
