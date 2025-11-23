@@ -59,6 +59,9 @@ export default function Navbar() {
             <Link href="/about" className="hover:text-neon-blue transition-colors">
               About
             </Link>
+            <Link href="/tags" className="hover:text-neon-blue transition-colors">
+              Browse Tags
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -82,6 +85,9 @@ export default function Navbar() {
               </Link>
               <Link href="/about" className="py-2 hover:text-neon-blue transition-colors">
                 About
+              </Link>
+              <Link href="/tags" className="py-2 hover:text-neon-blue transition-colors">
+                Browse Tags
               </Link>
             </div>
           </div>
