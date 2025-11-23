@@ -26,12 +26,7 @@ export default function Navbar() {
               alt="Fairplay Reviews" 
               className="h-10 w-10 sm:hidden group-hover:shadow-neon transition-all duration-300"
             />
-            {/* Desktop logos */}
-            <img 
-              src="/images/logo.png" 
-              alt="Fairplay Reviews" 
-              className="h-10 w-10 hidden sm:block group-hover:shadow-neon transition-all duration-300"
-            />
+            {/* Desktop logo */}
             <img 
               src="/images/logo-full.png" 
               alt="Fairplay Reviews" 
