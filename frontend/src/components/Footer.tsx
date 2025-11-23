@@ -93,6 +93,8 @@ export default function Footer() {
                 <Link href="/search" className="text-gray-400 hover:text-white transition-colors">
                   Search
                 </Link>
+              </li>
+              <li>
                 <Link href="/tags" className="text-gray-400 hover:text-white transition-colors">
                   Browse Tags
                 </Link>
@@ -148,3 +150,4 @@ export default function Footer() {
     </footer>
   );
 }
+
