@@ -80,11 +80,6 @@ export default function Navbar() {
               className="h-10 w-10 sm:hidden group-hover:shadow-neon transition-all duration-300"
             />
             <img 
-              src="/images/logo.png" 
-              alt="Fairplay Reviews" 
-              className="h-10 w-10 hidden sm:block group-hover:shadow-neon transition-all duration-300"
-            />
-            <img 
               src="/images/logo-full.png" 
               alt="Fairplay Reviews" 
               className="h-8 hidden sm:block"
