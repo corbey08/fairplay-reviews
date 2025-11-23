@@ -9,6 +9,19 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 from textblob import TextBlob
+import nltk
+import os
+
+# Auto-download NLTK data on Railway
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    print("📥 Downloading NLTK data...")
+    nltk.download('stopwords', quiet=True)
+    nltk.download('punkt', quiet=True)
+    nltk.download('wordnet', quiet=True)
+    nltk.download('averaged_perceptron_tagger', quiet=True)
+    print("✅ NLTK data downloaded")
 
 class ImprovedTagAnalyzer:
     """
