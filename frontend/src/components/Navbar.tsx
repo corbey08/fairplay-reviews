@@ -41,7 +41,7 @@ export default function Navbar() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search games or tags..."
+                placeholder="Search games..."
                 className="w-full bg-dark-bg border border-neon-blue/30 rounded-lg px-4 py-2 pl-10 focus:outline-none focus:border-neon-blue transition-colors"
               />
               <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
