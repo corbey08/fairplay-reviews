@@ -58,15 +58,17 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
   return (
     <div className="min-h-screen">
       {/* Hero Section with Game Header Image */}
-      <div className="relative h-[60vh] min-h-[400px]">
+      <div className="relative h-[50vh] min-h-[300px] md:h-[60vh] md:min-h-[400px]">
         {game.cover_image ? (
           <>
             <Image
               src={game.cover_image}
               alt={game.name}
               fill
-              className="object-cover"
+              className="object-cover md:object-contain"
               priority
+              quality={95}
+              unoptimized={true}
             />
             {/* Gradient overlays */}
             <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/50 to-transparent" />
@@ -197,3 +199,4 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
     </div>
   );
 }
+
