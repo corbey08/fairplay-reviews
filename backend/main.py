@@ -20,7 +20,7 @@ app.add_middleware(
         "http://localhost:3000",
         "https://fairplayreviews.net",
         "https://www.fairplayreviews.net",
-        "https://fairplay-reviews-m5galzts6-chris-beardwoods-projects.vercel.app",
+        "https://*.vercel.app",  # Allow all Vercel preview deployments
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -298,3 +298,4 @@ async def search_games(q: str, db: Session = Depends(get_db)):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
