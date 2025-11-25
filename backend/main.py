@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from sqlalchemy import and_, func
+from sqlalchemy import func
 from typing import List, Optional
 from pydantic import BaseModel
 from datetime import date, datetime
@@ -9,7 +9,6 @@ import os
 
 from models import Game, Tag, Review, Source, game_tags
 from database import get_db
-from steam_service import fetch_steam_games_and_reviews
 
 app = FastAPI(title="Game Review Aggregator API")
 
@@ -20,7 +19,6 @@ app.add_middleware(
         "http://localhost:3000",
         "https://fairplayreviews.net",
         "https://www.fairplayreviews.net",
-        "https://*.vercel.app",  # Allow all Vercel preview deployments
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -295,7 +293,7 @@ async def search_games(q: str, db: Session = Depends(get_db)):
         ]
     }
 
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
