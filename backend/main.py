@@ -5,6 +5,7 @@ from sqlalchemy import and_, func
 from typing import List, Optional
 from pydantic import BaseModel
 from datetime import date, datetime
+from steam_service import fetch_and_save_recent_games
 import os
 
 from models import Game, Tag, Review, Source, game_tags
@@ -315,3 +316,4 @@ async def fetch_games(days_back: int = 30, db: Session = Depends(get_db)):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
