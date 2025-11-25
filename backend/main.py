@@ -5,7 +5,6 @@ from sqlalchemy import and_, func
 from typing import List, Optional
 from pydantic import BaseModel
 from datetime import date, datetime
-from steam_service import fetch_and_save_recent_games
 import os
 
 from models import Game, Tag, Review, Source, game_tags
@@ -296,24 +295,6 @@ async def search_games(q: str, db: Session = Depends(get_db)):
         ]
     }
 
-
-@app.post("/admin/fetch-games")
-async def fetch_games(days_back: int = 30, db: Session = Depends(get_db)):
-    """
-    Admin endpoint to manually trigger fetching games from IGDB
-    """
-    try:
-        result = fetch_and_save_recent_games(db, days_back=days_back, limit=50)
-        return {
-            "success": True,
-            "message": f"Fetched and processed {result['total']} games",
-            "details": result
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
