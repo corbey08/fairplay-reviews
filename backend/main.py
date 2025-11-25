@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from sqlalchemy import and_, func
 from typing import List, Optional
 from pydantic import BaseModel
 from datetime import date, datetime
@@ -79,7 +80,8 @@ async def root():
             "games": "/games",
             "game_detail": "/games/{game_id}",
             "tags": "/tags",
-            "reviews": "/games/{game_id}/reviews"
+            "reviews": "/games/{game_id}/reviews",
+            "multi_tag_search": "/games/search/multi-tag"
         }
     }
 
@@ -98,6 +100,117 @@ async def get_games(
     else:
         games = db.query(Game).offset(skip).limit(limit).all()
     return games
+
+@app.get("/games/search/multi-tag")
+async def search_games_by_multiple_tags(
+    include: Optional[str] = None,
+    exclude: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    """
+    Search games by multiple tags with include/exclude logic.
+    Returns games grouped by match level.
+    
+    Parameters:
+    - include: Comma-separated list of tag names that should be included
+    - exclude: Comma-separated list of tag names that should be excluded
+    
+    Returns games organized by how many of the included tags they match.
+    """
+    if not include:
+        return {"error": "At least one tag to include is required", "results": {}}
+    
+    # Parse tag lists
+    included_tags = [t.strip() for t in include.split(',') if t.strip()]
+    excluded_tags = [t.strip() for t in exclude.split(',') if t.strip()] if exclude else []
+    
+    if not included_tags:
+        return {"error": "At least one tag to include is required", "results": {}}
+    
+    # Get tag IDs for included and excluded tags
+    included_tag_objects = db.query(Tag).filter(Tag.name.in_(included_tags)).all()
+    excluded_tag_objects = db.query(Tag).filter(Tag.name.in_(excluded_tags)).all() if excluded_tags else []
+    
+    included_tag_ids = [t.id for t in included_tag_objects]
+    excluded_tag_ids = [t.id for t in excluded_tag_objects]
+    
+    if not included_tag_ids:
+        return {"error": "No valid tags found", "results": {}}
+    
+    # First, get all games that have at least one of the included tags
+    # and don't have any of the excluded tags
+    query = db.query(
+        Game.id,
+        Game.igdb_id,
+        Game.name,
+        Game.release_date,
+        Game.cover_image,
+        Game.summary,
+        Game.platform_list,
+        Game.created_at,
+        func.count(game_tags.c.tag_id).label('matching_tags_count')
+    ).join(
+        game_tags, Game.id == game_tags.c.game_id
+    ).filter(
+        game_tags.c.tag_id.in_(included_tag_ids)
+    ).group_by(
+        Game.id,
+        Game.igdb_id,
+        Game.name,
+        Game.release_date,
+        Game.cover_image,
+        Game.summary,
+        Game.platform_list,
+        Game.created_at
+    )
+    
+    games_with_counts = query.all()
+    
+    # Filter out games that have excluded tags
+    if excluded_tag_ids:
+        games_with_excluded = db.query(game_tags.c.game_id).filter(
+            game_tags.c.tag_id.in_(excluded_tag_ids)
+        ).distinct().all()
+        excluded_game_ids = {g[0] for g in games_with_excluded}
+        games_with_counts = [g for g in games_with_counts if g.id not in excluded_game_ids]
+    
+    # Organize games by match level
+    total_required = len(included_tag_ids)
+    results_by_match_level = {}
+    
+    for game_data in games_with_counts:
+        matches = int(game_data.matching_tags_count)
+        missing = total_required - matches
+        
+        if missing not in results_by_match_level:
+            results_by_match_level[missing] = []
+        
+        # Get full game object with tags
+        game = db.query(Game).filter(Game.id == game_data.id).first()
+        
+        results_by_match_level[missing].append({
+            "id": game.id,
+            "igdb_id": game.igdb_id,
+            "name": game.name,
+            "release_date": game.release_date,
+            "cover_image": game.cover_image,
+            "summary": game.summary,
+            "platform_list": game.platform_list,
+            "tags": [{"id": t.id, "name": t.name, "color": t.color} for t in game.tags],
+            "matching_tags": matches,
+            "missing_tags": missing
+        })
+    
+    # Sort each group by name
+    for key in results_by_match_level:
+        results_by_match_level[key].sort(key=lambda x: x['name'])
+    
+    return {
+        "included_tags": included_tags,
+        "excluded_tags": excluded_tags,
+        "total_required_tags": total_required,
+        "results": results_by_match_level
+    }
 
 @app.get("/games/{game_id}", response_model=GameResponse)
 async def get_game(
