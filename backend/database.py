@@ -16,7 +16,7 @@ if not DATABASE_URL:
 engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,  # Verify connections before using
-    echo=True  # Log SQL queries (set to False in production)
+    echo=False
 )
 
 # Create session factory
@@ -37,4 +37,5 @@ def init_db():
     print("Database tables created successfully!")
 
 if __name__ == "__main__":
+
     init_db()
