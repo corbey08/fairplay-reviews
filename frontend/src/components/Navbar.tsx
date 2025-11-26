@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Search, Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 interface SearchResult {
   id: number;
@@ -16,6 +17,12 @@ export default function Navbar() {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setIsMenuOpen(false); // auto-close menu on route change
+  }, [pathname]);
 
   // Debounced search
   useEffect(() => {
@@ -177,3 +184,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
