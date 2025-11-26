@@ -199,7 +199,7 @@ export default function BrowseTagsPage() {
             <button
               onClick={searchGames}
               disabled={includedCount === 0 || searching}
-              className="px-6 py-3 bg-neon-blue text-white rounded-lg font-semibold hover:bg-neon-blue/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-8 py-3 border-2 border-neon-blue text-neon-blue rounded-lg font-semibold hover:bg-neon-blue/10 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {searching ? "Searching..." : "Search Games"}
             </button>
@@ -317,3 +317,4 @@ export default function BrowseTagsPage() {
     </div>
   );
 }
+
