@@ -6,9 +6,9 @@ from pydantic import BaseModel
 from datetime import date, datetime
 import os
 
-from models import Game, Tag, Review, Source, game_tags
-from database import get_db
-from steam_service import fetch_steam_games_and_reviews
+#from models import Game, Tag, Review, Source, game_tags
+#from database import get_db
+#from steam_service import fetch_steam_games_and_reviews
 
 app = FastAPI(title="Game Review Aggregator API")
 
@@ -185,4 +185,5 @@ async def search_games(q: str, db: Session = Depends(get_db)):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
 
