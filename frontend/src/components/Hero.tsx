@@ -41,7 +41,7 @@ export default function Hero() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-16 max-w-3xl mx-auto">
+          <div className="grid grid-cols-3 gap-8 pt-16 max-w-3xl mx-auto">
             <div className="space-y-2">
               <div className="flex justify-center">
                 <Shield className="text-neon-green" size={32} />
@@ -70,4 +70,5 @@ export default function Hero() {
       </div>
     </div>
   );
+
 }
