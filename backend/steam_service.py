@@ -221,11 +221,8 @@ class SteamService:
             pass
         
         # Get cover image - use background for better quality in hero sections
-        cover_image = (
-            game_details.get('background') or      # Highest quality
-            game_details.get('background_raw') or  # Alternative high quality
-            game_details.get('header_image')       # Fallback
-        )
+        app_id = game_details.get('steam_appid', app_id)
+        cover_image = f"https://cdn.akamai.steamstatic.com/steam/apps/{app_id}/capsule_616x353.jpg"
         
         # Get platforms
         platforms = []
@@ -384,3 +381,4 @@ if __name__ == "__main__":
         
     finally:
         db.close()
+
