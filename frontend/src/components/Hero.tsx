@@ -28,13 +28,13 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
             <a
               href="/games"
-              className="px-8 py-3 bg-gradient-to-r from-neon-blue to-neon-pink rounded-lg font-semibold hover:shadow-neon transition-all duration-300 hover:scale-105"
+              className="px-8 py-3 border-2 border-neon-blue text-neon-blue rounded-lg font-semibold hover:bg-neon-blue/10 transition-all duration-300"
             >
               Explore Games
             </a>
             <a
               href="/about"
-              className="px-8 py-3 border-2 border-neon-blue text-neon-blue rounded-lg font-semibold hover:bg-neon-blue/10 transition-all duration-300"
+              className="px-8 py-3 bg-gradient-to-r from-neon-blue to-neon-pink rounded-lg font-semibold hover:shadow-neon transition-all duration-300 hover:scale-105"
             >
               How It Works
             </a>
@@ -72,3 +72,4 @@ export default function Hero() {
   );
 
 }
+
