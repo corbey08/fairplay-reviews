@@ -55,20 +55,26 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
     }
   };
 
+  // library_hero is 3840x1240 (aspect ratio 3.1:1) - perfect for hero sections
+  // This is much higher quality than the old 616x353 image
+  const heroImageUrl = game.cover_image;
+
   return (
     <div className="min-h-screen">
       {/* Hero Section with Game Header Image */}
-      <div className="relative h-[50vh] min-h-[300px] md:h-[60vh] md:min-h-[400px]">
-        {game.cover_image ? (
+      {/* Using proper 3.1:1 aspect ratio for library_hero (3840x1240) */}
+      <div className="relative w-full" style={{ aspectRatio: "3840/1240" }}>
+        {heroImageUrl ? (
           <>
             <Image
-              src={game.cover_image}
+              src={heroImageUrl}
               alt={game.name}
               fill
-              className="object-cover md:object-contain"
+              className="object-cover"
               priority
               quality={95}
               unoptimized={true}
+              sizes="100vw"
             />
             {/* Gradient overlays */}
             <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/50 to-transparent" />
@@ -199,4 +205,3 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
     </div>
   );
 }
-
