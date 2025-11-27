@@ -55,19 +55,22 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
     }
   };
 
-  // library_hero is 3840x1240 (aspect ratio 3.1:1) - perfect for hero sections
-  // This is much higher quality than the old 616x353 image
-  const heroImageUrl = game.cover_image;
+  // Desktop: library_hero (3840x1240, 3.1:1) - wide cinematic format
+  const desktopImageUrl = game.cover_image;
+  
+  // Mobile: library_600x900 (600x900, 2:3) - tall portrait format
+  const mobileImageUrl = `https://cdn.akamai.steamstatic.com/steam/apps/${game.igdb_id}/library_600x900.jpg`;
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Game Header Image */}
-      {/* Using proper 3.1:1 aspect ratio for library_hero (3840x1240) */}
-      <div className="relative w-full" style={{ aspectRatio: "3840/1240" }}>
-        {heroImageUrl ? (
+      {/* Hero Section with Responsive Images */}
+      
+      {/* Mobile Hero - Portrait format (600x900) */}
+      <div className="relative w-full md:hidden" style={{ aspectRatio: "600/900" }}>
+        {mobileImageUrl ? (
           <>
             <Image
-              src={heroImageUrl}
+              src={mobileImageUrl}
               alt={game.name}
               fill
               className="object-cover"
@@ -76,7 +79,56 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
               unoptimized={true}
               sizes="100vw"
             />
-            {/* Gradient overlays */}
+            {/* Gradient overlays for mobile */}
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/30 to-transparent" />
+          </>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-dark-card to-dark-bg" />
+        )}
+
+        {/* Game Title Overlay - Mobile */}
+        <div className="absolute bottom-0 left-0 right-0 p-6">
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-3xl font-bold mb-3" style={{
+              textShadow: '2px 2px 4px rgba(0,0,0,0.9), -1px -1px 2px rgba(0,0,0,0.9), 1px -1px 2px rgba(0,0,0,0.9), -1px 1px 2px rgba(0,0,0,0.9)'
+            }}>
+              {game.name}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-gray-300" style={{
+              textShadow: '2px 2px 4px rgba(0,0,0,0.9), -1px -1px 2px rgba(0,0,0,0.9), 1px -1px 2px rgba(0,0,0,0.9), -1px 1px 2px rgba(0,0,0,0.9)'
+            }}>
+              {game.release_date && (
+                <div className="flex items-center gap-2">
+                  <Calendar size={16} style={{ filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.9))' }} />
+                  <span>{formatDate(game.release_date)}</span>
+                </div>
+              )}
+              {game.platform_list && game.platform_list.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <span>•</span>
+                  <span>{game.platform_list.join(", ")}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Hero - Wide format (3840x1240) */}
+      <div className="relative w-full hidden md:block" style={{ aspectRatio: "3840/1240" }}>
+        {desktopImageUrl ? (
+          <>
+            <Image
+              src={desktopImageUrl}
+              alt={game.name}
+              fill
+              className="object-cover"
+              priority
+              quality={95}
+              unoptimized={true}
+              sizes="100vw"
+            />
+            {/* Gradient overlays for desktop */}
             <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/50 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-dark-bg/80 via-transparent to-dark-bg/80" />
           </>
@@ -84,7 +136,7 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
           <div className="absolute inset-0 bg-gradient-to-br from-dark-card to-dark-bg" />
         )}
 
-        {/* Game Title Overlay */}
+        {/* Game Title Overlay - Desktop */}
         <div className="absolute bottom-0 left-0 right-0 p-8">
           <div className="max-w-7xl mx-auto">
             <h1 className="text-5xl md:text-6xl font-bold mb-4" style={{
