@@ -74,7 +74,7 @@ export default function GameCard({ game }: GameCardProps) {
               {game.tags.slice(0, 3).map((tag) => (
                 <Link 
                   key={tag.id}
-                  href={`/search?tags=${encodeURIComponent(tag.name)}`}
+                  href={`/tags?tags=${encodeURIComponent(tag.name)}`}
                   onClick={(e) => e.stopPropagation()}  // Prevents card click
                 >
                   <span className={`tag-${tag.color} cursor-pointer hover:opacity-80 transition-opacity`}>
@@ -95,3 +95,4 @@ export default function GameCard({ game }: GameCardProps) {
   );
 
 }
+
