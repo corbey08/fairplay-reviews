@@ -26,18 +26,18 @@ class SteamService:
             # Use v1 endpoint which still works
             url = f"{self.base_url}/ISteamApps/GetAppList/v1/"
             
-            print("ðŸ“¥ Fetching Steam app list (this may take a moment)...")
+            print("🔥 Fetching Steam app list (this may take a moment)...")
             response = requests.get(url, timeout=30)
             response.raise_for_status()
             
             data = response.json()
             apps = data.get('applist', {}).get('apps', [])
             
-            print(f"âœ… Retrieved {len(apps)} Steam apps")
+            print(f"✅ Retrieved {len(apps)} Steam apps")
             return apps
             
         except Exception as e:
-            print(f"âŒ Error getting Steam app list: {e}")
+            print(f"❌ Error getting Steam app list: {e}")
             print("   Trying alternative method...")
             
             # Fallback: Try the older appdetails method with known recent games
@@ -67,7 +67,7 @@ class SteamService:
             return None
             
         except Exception as e:
-            print(f"   âš ï¸  Error getting details for {app_id}: {e}")
+            print(f"   ⚠️  Error getting details for {app_id}: {e}")
             return None
     
     def is_game(self, app_details: dict) -> bool:
@@ -98,7 +98,7 @@ class SteamService:
         Simplified approach: Check popular/recent game IDs directly
         This is much faster than fetching all 150k+ apps
         """
-        print(f"ðŸŽ® Fetching recent Steam games...")
+        print(f"🎮 Fetching recent Steam games...")
         
         # Sample of popular games with lots of reviews (great for testing)
         # Mix of recent and established titles
@@ -137,7 +137,7 @@ class SteamService:
             details = self.get_game_details(app_id)
             
             if not details or not self.is_game(details):
-                print(f"      âš ï¸  Skipped (not a game or unavailable)")
+                print(f"      ⚠️  Skipped (not a game or unavailable)")
                 continue
             
             # Check release date
@@ -157,14 +157,14 @@ class SteamService:
                         'name': details.get('name'),
                         'details': details
                     })
-                    print(f"      âœ… Added: {details.get('name')}")
+                    print(f"      ✅ Added: {details.get('name')}")
                 else:
-                    print(f"      â­ï¸  Too old (released {date_str})")
+                    print(f"      ⏭️  Too old (released {date_str})")
             except Exception as e:
-                print(f"      âš ï¸  Could not parse date: {e}")
+                print(f"      ⚠️  Could not parse date: {e}")
                 continue
         
-        print(f"\nâœ… Found {len(recent_games)} recent games")
+        print(f"\n✅ Found {len(recent_games)} recent games")
         return recent_games
     
     def get_top_reviews(self, app_id: int, num_reviews: int = 100):
@@ -182,7 +182,7 @@ class SteamService:
                 'purchase_type': 'all'
             }
             
-            print(f"ðŸ” Fetching top {num_reviews} reviews for app {app_id}...")
+            print(f"📝 Fetching top {num_reviews} reviews for app {app_id}...")
             
             response = requests.get(url, params=params, headers=self.headers, timeout=10)
             response.raise_for_status()
@@ -190,21 +190,21 @@ class SteamService:
             data = response.json()
             
             if not data.get('success') == 1:
-                print(f"   âš ï¸  No reviews available")
+                print(f"   ⚠️  No reviews available")
                 return []
             
             reviews = data.get('reviews', [])
-            print(f"   âœ… Got {len(reviews)} reviews")
+            print(f"   ✅ Got {len(reviews)} reviews")
             
             return reviews
             
         except Exception as e:
-            print(f"   âŒ Error getting reviews: {e}")
+            print(f"   ❌ Error getting reviews: {e}")
             return []
     
     def save_game_to_db(self, app_id: int, game_details: dict, db: Session):
         """
-        Save Steam game to database
+        Save Steam game to database with higher quality images
         """
         # Check if exists
         existing = db.query(Game).filter(Game.igdb_id == app_id).first()
@@ -220,9 +220,17 @@ class SteamService:
         except:
             pass
         
-        # Get cover image - use background for better quality in hero sections
+        # Get cover image - use library_hero for best quality
+        # This is 3840x1240px - much better than the old 616x353
+        # Falls back to header capsule (920x430) if library_hero not available
         app_id = game_details.get('steam_appid', app_id)
-        cover_image = f"https://cdn.akamai.steamstatic.com/steam/apps/{app_id}/capsule_616x353.jpg"
+        
+        # Primary: library_hero (3840x1240) - best for hero sections
+        cover_image = f"https://cdn.akamai.steamstatic.com/steam/apps/{app_id}/library_hero.jpg"
+        
+        # Note: If library_hero doesn't exist, we could fall back to:
+        # - header.jpg (920x430) - good quality header capsule
+        # - capsule_616x353.jpg - old default (lower quality)
         
         # Get platforms
         platforms = []
@@ -306,7 +314,7 @@ def fetch_steam_games_and_reviews(db: Session, days_back: int = 9000, games_limi
     Complete pipeline: Get recent Steam games + their top reviews
     """
     print("="*70)
-    print("ðŸŽ® STEAM-ONLY PIPELINE")
+    print("🎮 STEAM-ONLY PIPELINE")
     print("="*70)
     
     service = SteamService()
@@ -315,7 +323,7 @@ def fetch_steam_games_and_reviews(db: Session, days_back: int = 9000, games_limi
     recent_games = service.get_recent_games(days_back=days_back, limit=games_limit)
     
     if not recent_games:
-        print("âš ï¸  No games found")
+        print("⚠️  No games found")
         return {'games': 0, 'reviews': 0}
     
     total_reviews = 0
@@ -323,7 +331,7 @@ def fetch_steam_games_and_reviews(db: Session, days_back: int = 9000, games_limi
     
     for game_data in recent_games:
         try:
-            print(f"\nðŸ“¦ Processing: {game_data['name']}")
+            print(f"\n📦 Processing: {game_data['name']}")
             
             # Save game
             game = service.save_game_to_db(
@@ -340,14 +348,14 @@ def fetch_steam_games_and_reviews(db: Session, days_back: int = 9000, games_limi
             if reviews:
                 count = service.save_reviews_to_db(game, reviews, db)
                 total_reviews += count
-                print(f"   âœ… Saved {count} reviews")
+                print(f"   ✅ Saved {count} reviews")
             
         except Exception as e:
-            print(f"   âŒ Error: {e}")
+            print(f"   ❌ Error: {e}")
             continue
     
     print("\n" + "="*70)
-    print(f"âœ… Complete! Added {games_added} games with {total_reviews} reviews")
+    print(f"✅ Complete! Added {games_added} games with {total_reviews} reviews")
     print("="*70)
     
     return {'games': games_added, 'reviews': total_reviews}
@@ -356,7 +364,7 @@ def fetch_steam_games_and_reviews(db: Session, days_back: int = 9000, games_limi
 if __name__ == "__main__":
     from database import SessionLocal
     
-    print("ðŸŽ® Testing Steam-Only Service\n")
+    print("🎮 Testing Steam-Only Service\n")
     
     service = SteamService()
     db = SessionLocal()
@@ -365,20 +373,19 @@ if __name__ == "__main__":
         # Test: Get The Witcher 3 details and reviews
         witcher_app_id = 292030
         
-        print("1ï¸âƒ£ Testing game details...")
+        print("1️⃣ Testing game details...")
         details = service.get_game_details(witcher_app_id)
         if details:
-            print(f"   âœ… Game: {details['name']}")
+            print(f"   ✅ Game: {details['name']}")
             print(f"   Release: {details.get('release_date', {}).get('date')}")
         
-        print("\n2ï¸âƒ£ Testing top reviews...")
+        print("\n2️⃣ Testing top reviews...")
         reviews = service.get_top_reviews(witcher_app_id, num_reviews=5)
         if reviews:
-            print(f"   âœ… Got {len(reviews)} top reviews")
+            print(f"   ✅ Got {len(reviews)} top reviews")
             print(f"   Sample: {reviews[0]['review'][:100]}...")
         
-        print("\nâœ… Steam service working!")
+        print("\n✅ Steam service working!")
         
     finally:
         db.close()
-
