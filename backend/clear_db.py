@@ -1,14 +1,17 @@
 from database import SessionLocal, engine
 from models import Base, Game, Review, Tag, Source
 
+#Drop tables
 print("🗑️  Dropping all tables...")
 Base.metadata.drop_all(bind=engine)
 print("✅ All tables dropped")
 
+#Re-add tables
 print("🔨 Recreating all tables...")
 Base.metadata.create_all(bind=engine)
 print("✅ All tables recreated")
 
+#Count games in DB
 db = SessionLocal()
 game_count = db.query(Game).count()
 print(f"📊 Games in database: {game_count}")
@@ -17,4 +20,5 @@ db.close()
 if game_count == 0:
     print("✅ Database is clean! Ready to populate with Steam data.")
 else:
+
     print(f"⚠️  Warning: Still {game_count} games in database")
