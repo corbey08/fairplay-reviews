@@ -58,8 +58,9 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
   // Desktop: library_hero (3840x1240, 3.1:1) - wide cinematic format
   const desktopImageUrl = game.cover_image;
   
-  // Mobile: library_600x900 (600x900, 2:3) - tall portrait format
-  const mobileImageUrl = `https://cdn.akamai.steamstatic.com/steam/apps/${game.igdb_id}/library_600x900.jpg`;
+  // Mobile: library_600x900_2x (1200x1800, 2:3) - high-DPI portrait format
+  // This is the retina/2x version for better quality on high-DPI mobile screens
+  const mobileImageUrl = `https://cdn.akamai.steamstatic.com/steam/apps/${game.igdb_id}/library_600x900_2x.jpg`;
 
   return (
     <div className="min-h-screen">
