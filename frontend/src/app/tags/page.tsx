@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import GameCard from "@/components/GameCard";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
@@ -29,7 +29,7 @@ interface SelectedTag {
   state: TagSelectionState;
 }
 
-export default function BrowseTagsPage() {
+function BrowseTagsContent() {
   const searchParams = useSearchParams();
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<Map<number, TagSelectionState>>(new Map());
@@ -337,5 +337,18 @@ export default function BrowseTagsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Wrapper component with Suspense
+export default function BrowseTagsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-dark-bg flex items-center justify-center">
+        <p className="text-gray-400">Loading tags...</p>
+      </div>
+    }>
+      <BrowseTagsContent />
+    </Suspense>
   );
 }
