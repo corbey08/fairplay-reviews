@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import GameCard from "@/components/GameCard";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 
@@ -29,6 +30,7 @@ interface SelectedTag {
 }
 
 export default function BrowseTagsPage() {
+  const searchParams = useSearchParams();
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<Map<number, TagSelectionState>>(new Map());
   const [searchResults, setSearchResults] = useState<{ [key: number]: Game[] }>({});
@@ -46,6 +48,22 @@ export default function BrowseTagsPage() {
         if (response.ok) {
           const data = await response.json();
           setAllTags(data);
+          
+          // Pre-select tag from URL if present
+          const preSelectedTagName = searchParams.get('tags');
+          if (preSelectedTagName) {
+            const preSelectedTag = data.find((tag: Tag) => tag.name === preSelectedTagName);
+            if (preSelectedTag) {
+              const newMap = new Map<number, TagSelectionState>();
+              newMap.set(preSelectedTag.id, "include");
+              setSelectedTags(newMap);
+              
+              // Auto-search with the pre-selected tag
+              setTimeout(() => {
+                performSearch([preSelectedTagName], []);
+              }, 100);
+            }
+          }
         }
       } catch (error) {
         console.error("Error fetching tags:", error);
@@ -55,7 +73,7 @@ export default function BrowseTagsPage() {
     };
 
     fetchTags();
-  }, []);
+  }, [searchParams]);
 
   const handleTagClick = (tagId: number) => {
     setSelectedTags((prev) => {
@@ -81,23 +99,7 @@ export default function BrowseTagsPage() {
     setExpandedSections(new Set([0]));
   };
 
-  const searchGames = async () => {
-    const includedTags: string[] = [];
-    const excludedTags: string[] = [];
-
-    selectedTags.forEach((state, tagId) => {
-      const tag = allTags.find((t) => t.id === tagId);
-      if (tag) {
-        if (state === "include") includedTags.push(tag.name);
-        if (state === "exclude") excludedTags.push(tag.name);
-      }
-    });
-
-    if (includedTags.length === 0) {
-      alert("Please select at least one tag to include (single click)");
-      return;
-    }
-
+  const performSearch = async (includedTags: string[], excludedTags: string[]) => {
     setSearching(true);
     try {
       const params = new URLSearchParams();
@@ -122,6 +124,26 @@ export default function BrowseTagsPage() {
     } finally {
       setSearching(false);
     }
+  };
+
+  const searchGames = async () => {
+    const includedTags: string[] = [];
+    const excludedTags: string[] = [];
+
+    selectedTags.forEach((state, tagId) => {
+      const tag = allTags.find((t) => t.id === tagId);
+      if (tag) {
+        if (state === "include") includedTags.push(tag.name);
+        if (state === "exclude") excludedTags.push(tag.name);
+      }
+    });
+
+    if (includedTags.length === 0) {
+      alert("Please select at least one tag to include (single click)");
+      return;
+    }
+
+    await performSearch(includedTags, excludedTags);
   };
 
   const toggleSection = (missingCount: number) => {
@@ -317,4 +339,3 @@ export default function BrowseTagsPage() {
     </div>
   );
 }
-
