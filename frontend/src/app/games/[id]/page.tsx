@@ -192,7 +192,7 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
                     {game.tags.map((tag) => (
                       <Link 
                         key={tag.id}
-                        href={`/search?tags=${encodeURIComponent(tag.name)}`}
+                        href={`/tags?tags=${encodeURIComponent(tag.name)}`}
                       >
                         <span
                           className={`tag-${tag.color} text-base px-4 py-2 cursor-pointer hover:opacity-80 transition-opacity`}
@@ -258,4 +258,5 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
     </div>
   );
 }
+
 
