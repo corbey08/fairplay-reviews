@@ -60,7 +60,7 @@ def run_full_pipeline(
         print("STEP 3: GENERATING CONSENSUS TAGS")
         print("="*70)
         
-        analyzer = TagAnalyzer()
+        analyzer = TagAnalyzer(use_llm=False)
         analyzer.analyze_all_games(db, limit=result['games'])
         
         # Summary
@@ -172,4 +172,5 @@ if __name__ == "__main__":
         print("  python automation_pipeline.py stats  # Show database statistics")
         print("\nRunning quick update by default...\n")
         run_quick_update()
+
 
