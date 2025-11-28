@@ -18,8 +18,13 @@ beautifulsoup4==4.12.3
 lxml==5.3.0
 
 # NLP and Text Analysis
-rake-nltk==1.0.6
-scikit-learn==1.5.2
-textblob==0.18.0.post0
-nltk==3.9.1
-numpy==1.26.4
+sentence-transformers==2.2.2  # NEW - Main semantic analysis
+scikit-learn==1.5.2  # Already had this
+numpy==1.26.4  # Already had this
+
+anthropic==0.18.1  #Only needed if use_llm=True
+
+# Legacy NLP
+# rake-nltk==1.0.6
+# textblob==0.18.0.post0
+# nltk==3.9.1
