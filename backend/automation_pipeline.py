@@ -13,7 +13,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from database import SessionLocal
 from steam_service import fetch_steam_games_and_reviews
-from smart_tag_analyzer import SmartTagAnalyzer as TagAnalyzer
+from tag_analyzer import ImprovedTagAnalyzer as TagAnalyzer
 
 load_dotenv()
 
@@ -172,3 +172,4 @@ if __name__ == "__main__":
         print("  python automation_pipeline.py stats  # Show database statistics")
         print("\nRunning quick update by default...\n")
         run_quick_update()
+
