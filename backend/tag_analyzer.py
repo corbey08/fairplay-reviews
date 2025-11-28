@@ -458,6 +458,37 @@ Return a JSON object with tags as keys and lists of brief supporting quotes as v
             print(f"⚠️  LLM analysis failed: {e}")
             return {}
     
+    def _resolve_tag_conflicts(self, tag_scores: dict) -> dict:
+        """
+        Remove conflicting tags, keeping the one with higher score
+        """
+        # Define conflicting tag pairs
+        conflicts = [
+            ('Amazing Graphics', 'Poor Graphics'),
+            ('Compelling Story', 'Weak Story'),
+            ('Runs Smoothly', 'Performance Issues'),
+            ('Great Value', 'Overpriced'),
+            ('Fun Multiplayer', 'Dead Multiplayer'),
+            ('Addictive Gameplay', 'Repetitive/Boring'),
+        ]
+        
+        resolved_scores = dict(tag_scores)
+        
+        for tag1, tag2 in conflicts:
+            if tag1 in resolved_scores and tag2 in resolved_scores:
+                score1 = resolved_scores[tag1]['final_score']
+                score2 = resolved_scores[tag2]['final_score']
+                
+                # Remove the weaker one
+                if score1 > score2:
+                    print(f"   ⚖️  Conflict: Keeping '{tag1}' over '{tag2}' ({score1:.3f} vs {score2:.3f})")
+                    del resolved_scores[tag2]
+                else:
+                    print(f"   ⚖️  Conflict: Keeping '{tag2}' over '{tag1}' ({score2:.3f} vs {score1:.3f})")
+                    del resolved_scores[tag1]
+        
+        return resolved_scores
+    
     def generate_consensus_tags(self, game: Game, db: Session, top_n: int = 5):
         """
         Generate consensus tags for a game using semantic similarity
@@ -526,6 +557,9 @@ Return a JSON object with tags as keys and lists of brief supporting quotes as v
             frequency = data['count'] / len(reviews)
             avg_similarity = data['total_score'] / data['count']
             data['final_score'] = frequency * avg_similarity
+        
+        # Resolve conflicts BEFORE selecting top tags
+        tag_scores = self._resolve_tag_conflicts(tag_scores)
         
         # Sort by final score
         sorted_tags = sorted(
