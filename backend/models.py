@@ -40,7 +40,7 @@ class Tag(Base):
     description = Column(Text, nullable=True)
     
     __table_args__ = (
-        CheckConstraint(color.in_(['green', 'orange', 'red']), name='check_color'),
+        CheckConstraint(color.in_(['green', 'orange', 'red', 'gray']), name='check_color'),
     )
     
     # Relationships
@@ -83,4 +83,5 @@ class Review(Base):
     
     # Relationships
     game = relationship('Game', back_populates='reviews')
+
     source = relationship('Source', back_populates='reviews')
