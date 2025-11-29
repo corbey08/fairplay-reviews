@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar } from "lucide-react";
@@ -37,19 +36,13 @@ export default function GameCard({ game }: GameCardProps) {
       <div className="bg-dark-card rounded-lg overflow-hidden neon-border card-hover group">
         {/* Game Image */}
         <div className="relative aspect-[16/9] bg-dark-hover overflow-hidden">
-          {game.cover_image ? (
-            <Image
-              src={game.cover_image}
-              alt={game.name}
-              fill
-              className="object-cover group-hover:scale-110 transition-transform duration-300"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-600">
-              <span className="text-4xl">🎮</span>
-            </div>
-          )}
+          <Image
+            src={game.cover_image || "/images/logo.png"}
+            alt={game.name}
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          />
           
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent opacity-60" />
@@ -93,6 +86,4 @@ export default function GameCard({ game }: GameCardProps) {
       </div>
     </Link>
   );
-
 }
-
