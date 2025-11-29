@@ -6,28 +6,11 @@ export default function Hero() {
   const [bookmarked, setBookmarked] = useState(false);
 
   const handleBookmark = () => {
-    // Check if the browser supports bookmarking
-    if (window.sidebar && window.sidebar.addPanel) {
-      // Firefox
-      window.sidebar.addPanel(document.title, window.location.href, '');
-    } else if (window.external && ('AddFavorite' in window.external)) {
-      // IE
-      window.external.AddFavorite(window.location.href, document.title);
-    } else if (window.opera && window.print) {
-      // Opera
-      const elem = document.createElement('a');
-      elem.setAttribute('href', window.location.href);
-      elem.setAttribute('title', document.title);
-      elem.setAttribute('rel', 'sidebar');
-      elem.click();
-    } else {
-      // For browsers that don't support programmatic bookmarking (Chrome, Safari, modern browsers)
-      setBookmarked(true);
-      // Show instructions for manual bookmarking
-      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-      const shortcut = isMac ? 'Cmd+D' : 'Ctrl+D';
-      alert(`Press ${shortcut} to bookmark this page!`);
-    }
+    // For modern browsers, show instructions for manual bookmarking
+    setBookmarked(true);
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    const shortcut = isMac ? 'Cmd+D' : 'Ctrl+D';
+    alert(`Press ${shortcut} to bookmark this page!`);
   };
 
   return (
