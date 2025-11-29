@@ -68,7 +68,7 @@ export default function GameCard({ game }: GameCardProps) {
                 <Link 
                   key={tag.id}
                   href={`/tags?tags=${encodeURIComponent(tag.name)}`}
-                  onClick={(e) => e.stopPropagation()}  // Prevents card click
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <span className={`tag-${tag.color} cursor-pointer hover:opacity-80 transition-opacity`}>
                     {tag.name}
