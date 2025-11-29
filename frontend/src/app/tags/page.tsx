@@ -206,7 +206,7 @@ function BrowseTagsContent() {
               <button
                 key={tag.id}
                 onClick={() => handleTagClick(tag.id)}
-                className={`tag-${tag.color} text-base px-6 py-3 cursor-pointer transition-all ${getTagStateClass(
+                className={`tag-${tag.color} cursor-pointer transition-all ${getTagStateClass(
                   tag.id
                 )}`}
               >
@@ -352,3 +352,4 @@ export default function BrowseTagsPage() {
     </Suspense>
   );
 }
+
