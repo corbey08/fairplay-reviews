@@ -314,7 +314,7 @@ class ImprovedTagAnalyzer:
             # NEUTRAL/MIXED TAGS (5)
             TagDefinition(
                 name="Challenging",
-                color="gray",
+                color="orange",
                 category="neutral",
                 keywords=['difficult', 'hard', 'challenging'],
                 semantic_examples=[
@@ -325,7 +325,7 @@ class ImprovedTagAnalyzer:
             ),
             TagDefinition(
                 name="Unique Concept",
-                color="gray",
+                color="orange",
                 category="neutral",
                 keywords=['unique', 'innovative', 'original', 'different'],
                 semantic_examples=[
@@ -336,7 +336,7 @@ class ImprovedTagAnalyzer:
             ),
             TagDefinition(
                 name="Great for Kids",
-                color="gray",
+                color="orange",
                 category="neutral",
                 keywords=['kids', 'family', 'children', 'casual'],
                 semantic_examples=[
@@ -347,7 +347,7 @@ class ImprovedTagAnalyzer:
             ),
             TagDefinition(
                 name="Niche Appeal",
-                color="gray",
+                color="orange",
                 category="neutral",
                 keywords=['niche', 'specific', 'fans'],
                 semantic_examples=[
@@ -358,7 +358,7 @@ class ImprovedTagAnalyzer:
             ),
             TagDefinition(
                 name="Mixed Experience",
-                color="gray",
+                color="orange",
                 category="neutral",
                 keywords=['mixed', 'some good', 'some bad'],
                 semantic_examples=[
@@ -654,3 +654,4 @@ if __name__ == "__main__":
         analyzer.analyze_all_games(db, limit=None)
     finally:
         db.close()
+
